@@ -3,81 +3,124 @@
 @Author  : residuallaugh 
 -->
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en-US">
 <head>
     <meta charset="UTF-8">    
+    <title>Find Something</title>
+    <style type="text/css">
+        body {
+            width: 880px;
+            font-size: 14px;
+        }
+        .navbar {
+            width: 8880px;
+            height: 30px;
+            margin-left: 15px;
+        }
+        .nav-button {
+            width: 65px;
+            height: 28px;
+            float: left;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            border: 1px solid black;
+            overflow: hidden; /* Prevent overflow */
+            white-space: nowrap; /* Prevent text wrapping */
+            text-overflow: ellipsis; /* Add ellipsis for overflow text */
+        }
+        .nav-home {
+            background: #000000;
+            color: #ffffff;
+            border-radius: 2px 0 0 2px;
+        }
+        .nav-settings {
+            background: #ffffff;
+            color: #000000;
+            border-radius: 0 2px 2px 0;
+        }
+        .content {
+            width: 780px;
+            height: 800px;
+            margin-left: 15px;
+        }
+        .sidebar {
+            width: 256px;
+            float: left;
+            border-right: 1px solid #e8e8e8;
+        }
+        .findsomething_title {
+            font-size: 16px;
+            font-weight: bold;
+            border-left: 4px solid black;
+            text-indent: 4px;
+            height: 16px;
+            line-height: 16px;
+        }
+        .copy {
+            border: none;
+            background-color: #ffffff;
+            float: right;
+            margin-right: 16px;
+            cursor: pointer;
+        }
+        .tips {
+            display: inline-block;
+            border-top: 0.2px solid;
+            border-right: 0.2px solid;
+            width: 10px;
+            height: 10px;
+            border-color: #EA6000;
+            transform: rotate(-135deg);
+        }
+        a {
+            text-decoration: none;
+            color: #333;
+        }
+    </style>
 </head>
-<body style="width:780px; font-size: 14px;">
-    <div style="width:780px; height: 30px; margin-left: 15px;">
-        <a href="popup.html"><div style="width: 55px; height: 28px; float: left; text-align: center; line-height: 28px; font-size: 14px; background: #000000; color: #ffffff; border: 1px solid black;border-radius: 2px 0px 0px 2px;">主页</div></a>
-        <a href="settings.html"><div style="width: 55px; height: 28px; float: left; text-align: center; line-height: 28px; font-size: 14px; background: #ffffff; color: #000000; border: 1px solid black;border-radius: 0px 2px 2px 0px;">配置</div></a>
+<body>
+    <div class="navbar">
+        <a href="popup.html">
+            <div class="nav-button nav-home">Home</div>
+        </a>
+        <a href="settings.html">
+            <div class="nav-button nav-settings">Settings</div>
+        </a>
     </div>
-    <div style="width:780px; height: 800px; margin-left: 15px;">
+    <div class="content">
         <div id="taskstatus" style="height: 34px; line-height: 34px;"></div>
-        <div style="width: 256px; float: left; border-right: 1px solid #e8e8e8;">
-            <div class="findsomething_title">IP<button type="button" class="copy" name="ip">复制</button></div>
-            <p id="ip" style="word-break:break-word;">🈚️</p>
-            <div class="findsomething_title">IP_PORT<button class="copy" name="ip_port">复制</button></div>
-            <p id="ip_port" style="word-break:break-word;">🈚️</p>
-            <div class="findsomething_title">域名<button class="copy" name="domain">复制</button></div>
-            <p id="domain" style="word-break:break-word;">🈚️</p>
-            <div class="findsomething_title">身份证<button class="copy" name="sfz">复制</button></div>
-            <p id="sfz" style="">🈚️</p>
-            <div class="findsomething_title">手机号<button class="copy" name="mobile">复制</button></div>
-            <p id="mobile" style="">🈚️</p>
-            <div class="findsomething_title">邮箱<button class="copy" name="mail">复制</button></div>
-            <p id="mail" style="">🈚️</p>
-            <div class="findsomething_title">JWT<button class="copy" name="jwt">复制</button></div>
-            <p id="jwt" style="word-break:break-word;">🈚️</p>
-            <div class="findsomething_title">算法<button class="copy" name="algorithm">复制</button></div>
-            <p id="algorithm" style="">🈚️</p>
-            <div class="findsomething_title">Secret<button class="copy" name="secret">复制</button></div>
-            <p id="secret" style="">🈚️</p>
+        <div class="sidebar">
+            <div class="findsomething_title">IP<button type="button" class="copy" name="ip">Copy</button></div>
+            <p id="ip" style="word-break: break-word;">no entry</p>
+            <div class="findsomething_title">IP_PORT<button class="copy" name="ip_port">Copy</button></div>
+            <p id="ip_port" style="word-break: break-word;">no entry</p>
+            <div class="findsomething_title">Domain<button class="copy" name="domain">Copy</button></div>
+            <p id="domain" style="word-break: break-word;">no entry</p>
+            <div class="findsomething_title">ID Card<button class="copy" name="sfz">Copy</button></div>
+            <p id="sfz">no entry</p>
+            <div class="findsomething_title">Mobile Number<button class="copy" name="mobile">Copy</button></div>
+            <p id="mobile">no entry</p>
+            <div class="findsomething_title">Email<button class="copy" name="mail">Copy</button></div>
+            <p id="mail">no entry</p>
+            <div class="findsomething_title">JWT<button class="copy" name="jwt">Copy</button></div>
+            <p id="jwt" style="word-break: break-word;">no entry</p>
+            <div class="findsomething_title">Algorithm<button class="copy" name="algorithm">Copy</button></div>
+            <p id="algorithm">no entry</p>
+            <div class="findsomething_title">Secret<button class="copy" name="secret">Copy</button></div>
+            <p id="secret">no entry</p>
         </div>
-        <div style="width: 480px; height: 800px; float: left; margin-left:16px;">
-            <div class="findsomething_title">Path<button id="path_button" class="copy" name="path">复制</button><button id="path_url_button" class="copy" name="path">复制URL</button></div>
-            <p id="path" style="">🈚️</p>
-            <div class="findsomething_title">IncompletePath<button class="copy" name="incomplete_path">复制</button></div>
-            <p id="incomplete_path" style="">🈚️</p>
-            <div class="findsomething_title">Url<button class="copy" name="url">复制</button></div>
-            <p id="url" style="">🈚️</p>
-            <div class="findsomething_title">StaticUrl<button class="copy" name="static">复制</button></div>
-            <p id="static" style="">🈚️</p>
+        <div style="width: 480px; height: 800px; float: left; margin-left: 16px;">
+            <div class="findsomething_title">Path<button id="path_button" class="copy" name="path">Copy</button><button id="path_url_button" class="copy" name="path">Copy URL</button></div>
+            <p id="path">no entry</p>
+            <div class="findsomething_title">Incomplete Path<button class="copy" name="incomplete_path">Copy</button></div>
+            <p id="incomplete_path">no entry</p>
+            <div class="findsomething_title">Url<button class="copy" name="url">Copy</button></div>
+            <p id="url">no entry</p>
+            <div class="findsomething_title">Static Url<button class="copy" name="static">Copy</button></div>
+            <p id="static">no entry</p>
         </div>
-</div>
+    </div>
+    <script src="popup.js"></script>
 </body>
-<!-- <script src="jquery-3.6.0.min.js"></script> -->
-<script src="popup.js"> </script>
-<style type="text/css">
-    .copy {
-        border-style: none;
-        background-color: #ffffff;
-        float: right;
-        margin-right: 16px;
-    }
-    .findsomething_title {
-        font-size: 16px;
-        font-weight: bold;
-        border-left: 4px solid black;
-        text-indent: 4px;
-        height: 16px;
-        line-height: 16px;
-    }
-    .tips {
-        display: inline-block;
-        border-top: 0.2px solid;
-        border-right: 0.2px solid;
-        width: 10px;
-        height: 10px;
-        border-color: #EA6000;
-        transform: rotate(-135deg);
-    }
-    a{
-        text-decoration:none;
-        color:#333;
-    }
-    button{
-        cursor: pointer
-    }
-</style>
 </html>

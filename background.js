@@ -762,41 +762,42 @@ function unique(arr1){
   // }
   return arr2
 }
-//查找search_data中是否已经存在了，如果已存在则不返回
-function find(arr1,arr2) {
-  var arr3 = []
-  arr1.forEach(function (item,index,array) {
-    if(arr2.indexOf(item)==-1){
-      arr3.push(item)
+// Check if the item already exists in search_data, if it exists, do not return it
+function find(arr1, arr2) {
+  var arr3 = [];
+  arr1.forEach(function (item, index, array) {
+    if (arr2.indexOf(item) == -1) {
+      arr3.push(item);
     }
-  })
-  return arr3
-}
-//去重合并两个数组 并集
-function add(arr1,arr2) {
-  if(!arr1){
-    return arr2
-  }
-  if(!arr2){
-    return arr1
-  }
-  arr1.forEach(function (item,index,array) {
-    if(arr2.indexOf(item)==-1){
-      arr2.push(item)
-    }
-  })
-  return arr2
+  });
+  return arr3;
 }
 
-//交集
-function jiaoji(arr1,arr2) {
-  var arr3 = [];
-  arr1.forEach(function (item,index,array) {
-    if(arr2.indexOf(item)>-1){
-      arr3.push(item)
+// Remove duplicates and merge two arrays (union)
+function add(arr1, arr2) {
+  if (!arr1) {
+    return arr2;
+  }
+  if (!arr2) {
+    return arr1;
+  }
+  arr1.forEach(function (item, index, array) {
+    if (arr2.indexOf(item) == -1) {
+      arr2.push(item);
     }
-  })
-  return arr3
+  });
+  return arr2;
+}
+
+// Intersection
+function jiaoji(arr1, arr2) {
+  var arr3 = [];
+  arr1.forEach(function (item, index, array) {
+    if (arr2.indexOf(item) > -1) {
+      arr3.push(item);
+    }
+  });
+  return arr3;
 }
 
 
@@ -854,30 +855,55 @@ function get_secret(data) {
     return result;
 }
 
-// 数据提取放到background里，避免前端加载时阻塞。
+// Data extraction is placed in the background to avoid blocking during frontend loading.
 function extract_info(data) {
   // console.log('extraInfo');
-  var extract_data = {}
+  var extract_data = {};
+  
+  // Extract ID card numbers
   extract_data['sfz'] = data.match(/['"]((\d{8}(0\d|10|11|12)([0-2]\d|30|31)\d{3}$)|(\d{6}(18|19|20)\d{2}(0[1-9]|10|11|12)([0-2]\d|30|31)\d{3}(\d|X|x)))['"]/g);
+  // Extract mobile phone numbers
   extract_data['mobile'] = data.match(/['"](1(3([0-35-9]\d|4[1-8])|4[14-9]\d|5([\d]\d|7[1-79])|66\d|7[2-35-8]\d|8\d{2}|9[89]\d)\d{7})['"]/g);
+  
+  // Extract email addresses
   extract_data['mail'] = data.match(/['"][a-zA-Z0-9\._\-]*@[a-zA-Z0-9\._\-]{1,63}\.((?!js|css|jpg|jpeg|png|ico)[a-zA-Z]{2,})['"]/g);
+  
+  // Extract IP addresses
   extract_data['ip'] = data.match(/['"](([a-zA-Z0-9]+:)?\/\/)?\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(\/.*?)?['"]/g);
+  
+  // Extract IP addresses with ports
   extract_data['ip_port'] = data.match(/['"](([a-zA-Z0-9]+:)?\/\/)?\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\:\d{1,5}(\/.*?)?['"]/g);
+  
+  // Extract domain names
   extract_data['domain'] = data.match(/['"](([a-zA-Z0-9]+:)?\/\/)?[a-zA-Z0-9\-\.]*?\.(xin|com|cn|net|com.cn|vip|top|cc|shop|club|wang|xyz|luxe|site|news|pub|fun|online|win|red|loan|ren|mom|net.cn|org|link|biz|bid|help|tech|date|mobi|so|me|tv|co|vc|pw|video|party|pics|website|store|ltd|ink|trade|live|wiki|space|gift|lol|work|band|info|click|photo|market|tel|social|press|game|kim|org.cn|games|pro|men|love|studio|rocks|asia|group|science|design|software|engineer|lawyer|fit|beer|tw|我爱你|中国|公司|网络|在线|网址|网店|集团|中文网)(\:\d{1,5})?(\/)?['"]/g);
-  extract_data['path'] = data.match(/['"](?:\/|\.\.\/|\.\/)[^\/\>\< \)\(\{\}\,\'\"\\]([^\>\< \)\(\{\}\,\'\"\\])*?['"]/g);
-  extract_data['incomplete_path'] = data.match(/['"][^\/\>\< \)\(\{\}\,\'\"\\][\w\/]*?\/[\w\/]*?['"]/g);
+  
+  // Extract paths
+  extract_data['path'] = data.match(/['"](?:\/|\.\.\/|\.\/)[^\/\>\< \)$\{\}\,\'\"\\]([^\>\< $$\{\}\,\'\"\\])*?['"]/g);
+  
+  // Extract incomplete paths
+  extract_data['incomplete_path'] = data.match(/['"][^\/\>\< $\(\{\}\,\'\"\\][\w\/]*?\/[\w\/]*?['"]/g);
+  
+  // Extract URLs
   extract_data['url'] = data.match(/['"](([a-zA-Z0-9]+:)?\/\/)?[a-zA-Z0-9\-\.]*?\.(xin|com|cn|net|com.cn|vip|top|cc|shop|club|wang|xyz|luxe|site|news|pub|fun|online|win|red|loan|ren|mom|net.cn|org|link|biz|bid|help|tech|date|mobi|so|me|tv|co|vc|pw|video|party|pics|website|store|ltd|ink|trade|live|wiki|space|gift|lol|work|band|info|click|photo|market|tel|social|press|game|kim|org.cn|games|pro|men|love|studio|rocks|asia|group|science|design|software|engineer|lawyer|fit|beer|tw|我爱你|中国|公司|网络|在线|网址|网店|集团|中文网)(\:\d{1,5})?(\/.*?)?['"]/g);
+  
+  // Extract JWT tokens
   extract_data['jwt'] = data.match(/['"](ey[A-Za-z0-9_-]{10,}\.[A-Za-z0-9._-]{10,}|ey[A-Za-z0-9_\/+-]{10,}\.[A-Za-z0-9._\/+-]{10,})['"]/g);
-  // search_data['algorithm'] = data.match(/\WBase64\.encode\(|\WBase64\.decode\(|\Wbtoa\(|\Watob\(|\WCryptoJS\.AES\.|\WCryptoJS\.DES\.|\WJSEncrypt\(|\Wrsa\.|\WKJUR\.|\W$\.md5\(|\Wmd5\(|\Wsha1\(|\Wsha256\(|\Wsha512\(/gi);
+  
+  // Extract algorithms
   extract_data['algorithm'] = data.match(/\W(Base64\.encode|Base64\.decode|btoa|atob|CryptoJS\.AES|CryptoJS\.DES|JSEncrypt|rsa|KJUR|$\.md5|md5|sha1|sha256|sha512)[\(\.]/gi);
+  
+  // Extract secrets using a custom function
   extract_data['secret'] = get_secret(data);
-  if (extract_data['url']){
-        extract_data['url'].map((url)=>{
-        extract_data['ip'] = add(extract_data['ip'], url.match(/['"](([a-zA-Z0-9]+:)?\/\/)?\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/g))
-        extract_data['ip_port'] = add(extract_data['ip_port'], url.match(/['"](([a-zA-Z0-9]+:)?\/\/)?\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\:\d{1,5}(\/.*?)?['"]/g))
-        extract_data['domain'] = add(extract_data['domain'], url.match(/['"](([a-zA-Z0-9]+:)?\/\/)?[a-zA-Z0-9\-\.]*?\.(xin|com|cn|net|com.cn|vip|top|cc|shop|club|wang|xyz|luxe|site|news|pub|fun|online|win|red|loan|ren|mom|net.cn|org|link|biz|bid|help|tech|date|mobi|so|me|tv|co|vc|pw|video|party|pics|website|store|ltd|ink|trade|live|wiki|space|gift|lol|work|band|info|click|photo|market|tel|social|press|game|kim|org.cn|games|pro|men|love|studio|rocks|asia|group|science|design|software|engineer|lawyer|fit|beer|tw|我爱你|中国|公司|网络|在线|网址|网店|集团|中文网)(\:\d{1,5})?/g))
-      })
+  
+  // If URLs are found, extract additional IPs and domains from them
+  if (extract_data['url']) {
+    extract_data['url'].map((url) => {
+      extract_data['ip'] = add(extract_data['ip'], url.match(/['"](([a-zA-Z0-9]+:)?\/\/)?\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/g));
+      extract_data['ip_port'] = add(extract_data['ip_port'], url.match(/['"](([a-zA-Z0-9]+:)?\/\/)?\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\:\d{1,5}(\/.*?)?['"]/g));
+      extract_data['domain'] = add(extract_data['domain'], url.match(/['"](([a-zA-Z0-9]+:)?\/\/)?[a-zA-Z0-9\-\.]*?\.(xin|com|cn|net|com.cn|vip|top|cc|shop|club|wang|xyz|luxe|site|news|pub|fun|online|win|red|loan|ren|mom|net.cn|org|link|biz|bid|help|tech|date|mobi|so|me|tv|co|vc|pw|video|party|pics|website|store|ltd|ink|trade|live|wiki|space|gift|lol|work|band|info|click|photo|market|tel|social|press|game|kim|org.cn|games|pro|men|love|studio|rocks|asia|group|science|design|software|engineer|lawyer|fit|beer|tw|我爱你|中国|公司|网络|在线|网址|网店|集团|中文网)(\:\d{1,5})?/g));
+    });
   }
+  
   return extract_data;
 }
 
@@ -888,9 +914,11 @@ function webhook(data) {
     // console.log(search_data[data]);
     data = JSON.stringify(search_data[data]);
     // console.log(data);
-    chrome.storage.local.get(["webhook_setting"], function(settings){
-        if(!settings || !settings["webhook_setting"] || settings["webhook_setting"] == {} || settings["webhook_setting"] ==undefined){
-            // console.log('获取webhook_setting失败');
+    
+    // Retrieve webhook settings from local storage
+    chrome.storage.local.get(["webhook_setting"], function(settings) {
+        if (!settings || !settings["webhook_setting"] || settings["webhook_setting"] == {} || settings["webhook_setting"] == undefined) {
+            // console.log('Failed to retrieve webhook_setting');
             return;
         }
         
@@ -901,119 +929,164 @@ function webhook(data) {
             cache: 'default',
             credentials: 'include'
         };
+        
         let webhookHeaders = new Headers();
-        if (settings["webhook_setting"]['url']!="") {
+        
+        // Check if the webhook URL is not empty
+        if (settings["webhook_setting"]['url'] != "") {
             var url = settings["webhook_setting"]['url'];
-            if (settings["webhook_setting"]['method']=="GET"){
-                url = url + "?" +  settings["webhook_setting"]['arg'] + "=" + data;
-            }else if (settings["webhook_setting"]['method']=="POST"){
+            
+            // Determine the request method (GET or POST)
+            if (settings["webhook_setting"]['method'] == "GET") {
+                url = url + "?" + settings["webhook_setting"]['arg'] + "=" + data;
+            } else if (settings["webhook_setting"]['method'] == "POST") {
                 webhookHeaders.append("Content-Type", "application/json");
                 webhookInit['method'] = "POST";
-                if (settings["webhook_setting"]['arg']!=""){
-                    webhookInit['body'] = settings["webhook_setting"]['arg'] + "=" + data
-                }else{
+                
+                // Set the body of the request
+                if (settings["webhook_setting"]['arg'] != "") {
+                    webhookInit['body'] = settings["webhook_setting"]['arg'] + "=" + data;
+                } else {
                     webhookInit['body'] = data;
                 }
-            }else{
-                console.log("webhook method error:"+settings["webhook_setting"]['method']);
+            } else {
+                console.log("Webhook method error: " + settings["webhook_setting"]['method']);
             }
-            if (settings["webhook_setting"]['headers']!={}){
+            
+            // Add custom headers if provided
+            if (settings["webhook_setting"]['headers'] != {}) {
                 for (let i in settings["webhook_setting"]['headers']) {
-                    webhookHeaders.append(i,settings["webhook_setting"]['headers'][i]);
+                    webhookHeaders.append(i, settings["webhook_setting"]['headers'][i]);
                 }
             }
+            
             webhookInit["headers"] = webhookHeaders;
             let webhookRequest = new Request(url, webhookInit);
             // console.log(webhookRequest);
+            
+            // Send the webhook request
             fetch(webhookRequest, webhookInit).then(function(response) {
                 // console.log(response);
-            }).catch(err=>{ console.log("webhook fetch error",err)});
+            }).catch(err => { 
+                console.log("Webhook fetch error", err);
+            });
         }
     });
 }
 
+
 function refresh_count() {
-  const cur = tab_url[selected_id];
-  let cnt = 0;
+  const cur = tab_url[selected_id]; // Get the current tab URL based on the selected ID
+  let cnt = 0; // Initialize a counter
+  
+  // Iterate through the keys in the search_data for the current URL
   for (const k in search_data[cur]) {
+    // Skip specific keys
     if (k == "done" || k == "tasklist" || k == "donetasklist" || k == "current" || k == "pretasknum")
       continue;
-    const v = search_data[cur][k];
+    
+    const v = search_data[cur][k]; // Get the value for the current key
+    // Skip if the value is an empty string or a specific emoji
     if (v == "🈚️" || v == "") continue;
-    cnt++;
+    
+    cnt++; // Increment the counter for valid entries
   }
+  
+  // Set the badge text to the count of valid entries
   chrome.action.setBadgeText({ text: "" + cnt });
-  if(search_data[cur] && search_data[cur]['donetasklist'] && search_data[cur]['pretasknum'] && search_data[cur]['donetasklist'].length==search_data[cur]['pretasknum']){
-    console.log(search_data[cur]['pretasknum'],search_data[cur]['donetasklist'].length,search_data[cur]['tasklist'].length)
-    search_data[cur]['done'] = 'done'
-    chrome.storage.local.set({["findsomething_result_"+cur]: search_data[cur]}, function(){});
-    refresh_storage_expire_index(cur)
+  
+  // Check if the done task list length matches the pre-task number
+  if (search_data[cur] && search_data[cur]['donetasklist'] && search_data[cur]['pretasknum'] && search_data[cur]['donetasklist'].length == search_data[cur]['pretasknum']) {
+    console.log(search_data[cur]['pretasknum'], search_data[cur]['donetasklist'].length, search_data[cur]['tasklist'].length);
+    
+    // Mark the current search data as done
+    search_data[cur]['done'] = 'done';
+    
+    // Save the updated search data to local storage
+    chrome.storage.local.set({ ["findsomething_result_" + cur]: search_data[cur] }, function() {});
+    
+    // Refresh the storage expiration index for the current URL
+    refresh_storage_expire_index(cur);
+    
+    // Call the webhook function with the current URL
     webhook(cur);
   }
-
 }
 
+
 function refresh_storage_expire_index(cur) {
-  console.log("refresh_storage_expire_index:"+cur)
-  chrome.storage.local.get(["expire_index"], function(expire_index){
-    expire_index = expire_index["expire_index"]
-    if(!expire_index){
-      expire_index = {}
+  console.log("refresh_storage_expire_index:" + cur);
+  
+  // Retrieve the expiration index from local storage
+  chrome.storage.local.get(["expire_index"], function(expire_index) {
+    expire_index = expire_index["expire_index"];
+    
+    // Initialize expire_index if it doesn't exist
+    if (!expire_index) {
+      expire_index = {};
     }
+    
     const today = new Date();
+    // Format today's date as a string (YYYYMMDD)
     const todaystr = today.toLocaleDateString('cn', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '');
-    expire_index[cur]=todaystr;
-    chrome.storage.local.set({["expire_index"]: expire_index}, function(){} )
-  })
+    
+    // Set the expiration date for the current key
+    expire_index[cur] = todaystr;
+    
+    // Save the updated expiration index back to local storage
+    chrome.storage.local.set({ ["expire_index"]: expire_index }, function() {});
+  });
 }
 
 function persist_tmp_data(tmp_data, req_url, current) {
-    //遍历所有数据类型
+    // Iterate through all data types
     for (var i = 0; i < key.length; i++) {
-        //如果传入的数据没有这个类型，就看下一个
-        if (tmp_data[key[i]] == null){
+        // If the incoming data does not have this type, continue to the next
+        if (tmp_data[key[i]] == null) {
           continue;
         }
-        // 把前端的处理放到这里避免重复
-        if (not_sub_key.indexOf(key[i])<0){
-          tmp_data[key[i]] = sub_1(tmp_data[key[i]])
+        
+        // Process the frontend data here to avoid duplication
+        if (not_sub_key.indexOf(key[i]) < 0) {
+          tmp_data[key[i]] = sub_1(tmp_data[key[i]]);
         }
-        tmp_data[key[i]].map((item)=>{
-            search_data[tmp_data['current']]['source'][item] = req_url
-        })
-        //如果search_data有历史数据，进行检查--20230625 这里没看懂，先注释看看
-        // console.log(tmp_data[key[i]])
-        // if (tmp_data['current'] in search_data){
-        //   for (var j = 0; j < key.length; j++) {
-        //     if (search_data[tmp_data['current']][key[j]]!=null){
-        //       tmp_data[key[i]] = jiaoji(unique(tmp_data[key[i]]),find(unique(tmp_data[key[i]]),search_data[tmp_data['current']][key[j]]))
-        //     }
-        //     // console.log(tmp_data[key[i]], search_data[tmp_data['current']][key[j]])
-        //   }
-        // }
-        // console.log(tmp_data[key[i]])
-        if (tmp_data['current'] in search_data && search_data[tmp_data['current']][key[i]]!=null ){
-          var search_data_value = unique(add(search_data[tmp_data['current']][key[i]],tmp_data[key[i]])).sort()
-          if ('static' in search_data[tmp_data['current']]){
-            var res = collect_static(search_data_value,search_data[tmp_data['current']]['static'])
-          }else{
-            var res = collect_static(search_data_value,[])
+        
+        // Map through the items and set the source in search_data
+        tmp_data[key[i]].map((item) => {
+            search_data[tmp_data['current']]['source'][item] = req_url;
+        });
+        
+        // Check if search_data has historical data
+        if (tmp_data['current'] in search_data && search_data[tmp_data['current']][key[i]] != null) {
+          var search_data_value = unique(add(search_data[tmp_data['current']][key[i]], tmp_data[key[i]])).sort();
+          
+          // Collect static data if it exists
+          if ('static' in search_data[tmp_data['current']]) {
+            var res = collect_static(search_data_value, search_data[tmp_data['current']]['static']);
+          } else {
+            var res = collect_static(search_data_value, []);
           }
-          search_data[tmp_data['current']][key[i]] = res['arr1']
-          search_data[tmp_data['current']]['static'] = res['static']
-        }else{
-          var search_data_value = unique(tmp_data[key[i]]).sort()
-          if ('static' in search_data[tmp_data['current']]){
-            var res = collect_static(search_data_value,search_data[tmp_data['current']]['static'])
-          }else{
-            var res = collect_static(search_data_value,[])
+          
+          // Update search_data with the new values
+          search_data[tmp_data['current']][key[i]] = res['arr1'];
+          search_data[tmp_data['current']]['static'] = res['static'];
+        } else {
+          var search_data_value = unique(tmp_data[key[i]]).sort();
+          
+          // Collect static data if it exists
+          if ('static' in search_data[tmp_data['current']]) {
+            var res = collect_static(search_data_value, search_data[tmp_data['current']]['static']);
+          } else {
+            var res = collect_static(search_data_value, []);
           }
-          search_data[tmp_data['current']]['static'] = unique(res['static'])
-          search_data[tmp_data['current']][key[i]] = unique(res['arr1'])
+          
+          // Initialize static and update search_data
+          search_data[tmp_data['current']]['static'] = unique(res['static']);
+          search_data[tmp_data['current']][key[i]] = unique(res['arr1']);
         }
     }
-
 }
+
 
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {

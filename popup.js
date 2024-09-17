@@ -16,7 +16,7 @@ function init_copy() {
                     Promise.all([getCurrentTab().then(function x(tab){
                         // console.log(tab);
                         if(tab == undefined){
-                            alert("请点击原页面后再复制：）")
+                            alert("Please click the original page before copying :)")
                             return;
                         }
                         var url = new URL(tab.url)
@@ -35,14 +35,14 @@ function init_copy() {
                         document.execCommand('copy',false);
                         // inp.remove();
                     })]).then(res=> inp.remove())
-                    // alert('复制成功');
+                    // alert('Copy successful');
                     return ;
                 }
                 inp.value = copytext;
                 inp.select();
                 document.execCommand('copy',false);
                 inp.remove();
-                // alert('复制成功');
+                // alert('Copy successful');
             }
         }
     }
@@ -73,7 +73,7 @@ function show_info(result_data) {
                 let link = document.createElement("a");
                 let source = result_data['source'][result_data[key[k]][i]];
                 if (source) {
-                    //虽然无法避免被xss，但插件默认提供了正确的CSP，这意味着我们即使不特殊处理，javascript也不会被执行。
+                    // Although it cannot avoid XSS, the plugin provides a correct CSP by default, which means that even if we do not handle it specially, JavaScript will not be executed.
                     // source = 'javascript:console.log`1`'
                     link.setAttribute("href", source);
                     link.setAttribute("title", source);
@@ -99,24 +99,24 @@ getCurrentTab().then(function get_info(tab) {
         result_data = result_data["findsomething_result_"+tab.url]
         // console.log(result_data)
         if(!result_data || result_data['done']!='done'){
-            // console.log('还未提取完成');
+            // console.log('Not yet extracted');
             if(result_data && result_data.donetasklist){
                 // console.log("findsomething_result_"+tab.url)
                 chrome.storage.local.get(["findsomething_result_"+tab.url], function(result){show_info(result["findsomething_result_"+tab.url]);});
                 // show_info(result_data);
-                document.getElementById('taskstatus').textContent = "处理中.."+result_data['donetasklist'].length+"/"+result_data['tasklist'].length;
+                document.getElementById('taskstatus').textContent = "Processing.."+result_data['donetasklist'].length+"/"+result_data['tasklist'].length;
             }else{
-                document.getElementById('taskstatus').textContent = "处理中..";
+                document.getElementById('taskstatus').textContent = "Processing..";
             }
             sleep(100);
             get_info(tab);
             return;
         }
         // console.log(result_data)
-        document.getElementById('taskstatus').textContent = "处理完成："+result_data['donetasklist'].length+"/"+result_data['tasklist'].length;
+        document.getElementById('taskstatus').textContent = "Processing complete："+result_data['donetasklist'].length+"/"+result_data['tasklist'].length;
         chrome.storage.local.get(["findsomething_result_"+tab.url], function(result){show_info(result["findsomething_result_"+tab.url]);});
         // show_info(result_data);
-        // 结果不一致继续刷新
+        // If the results are inconsistent, continue refreshing
         // if(result_data['donetasklist'].length!=result_data['tasklist'].length){
         //     get_info(tab);
         // }
