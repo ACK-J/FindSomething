@@ -1,6 +1,6 @@
 {
   "name": "FindSomething",
-  "version": "2.0.18",
+  "version": "1",
   "manifest_version": 2,
   "description": "Find Secrets Hidden in Webpages",
   "permissions": [
@@ -41,7 +41,7 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "{78dbc161-7082-40bc-bb47-79c5d55bbf41}"
+      "id": "{82e14b95-2a8c-4a26-814f-a824e478a1df}"
     }
   }
 }
